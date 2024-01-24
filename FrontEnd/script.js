@@ -1,4 +1,4 @@
-// URL de l'API
+// URL de l'API WORKS
 const urlWorks = 'http://localhost:5678/api/works'
 
 // Fonction de récupération des works via l'API
@@ -47,4 +47,45 @@ function processWorks(works) {
 
 document.addEventListener('DOMContentLoaded', () => {
     getWorks();
+  });
+
+
+  // URL DE L'API CATEGORIES
+  const urlCategories = 'http://localhost:5678/api/categories'
+
+  // Fonction de récupération des categories via l'API
+  async function getCategories (){
+
+    // Récupération des categories dans l'API
+    const responseCategories = await fetch(urlCategories)
+
+    // Si récupération ok alors ...
+    if (responseCategories.ok) {
+        let categories = await responseCategories.json()
+
+        // On appelle la fonciton qui gère les catégories
+        processCategories(categories)
+
+    } else {
+        console.error("erreur lors de la récupération : ", responseCategories.status)
+    }
+}
+
+    // Fonction qui gère les catégories
+  function processCategories (categories) {
+    // Pour chaque categorie on crée un bouton
+    categories.forEach(category => {
+        // On récupère le deuxième h2
+        const portfolio = document.querySelectorAll("h2")[1]
+        // On crée les boutons
+        let buttonCategories = document.createElement("button")
+        // On l'insère au niveau du H2
+        portfolio.appendChild(buttonCategories)
+        // ON insère le nom des catégories dans les boutons
+        buttonCategories.textContent = category.name
+    })
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    getCategories();
   });
