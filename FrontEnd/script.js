@@ -10,8 +10,7 @@ async function getWorks () {
 
     if(response.ok) {
         const works = await response.json()
-        // Appelle la fonction qui gere les works
-        processWorks(works)
+        return works 
     } else {
         // Si la requête pas ok, erreur
         console.error('erreur lors de la récupération des works', response.status)
@@ -19,8 +18,9 @@ async function getWorks () {
 }
 // Fonction de traitement des works
 function processWorks(works) {
-    // Pour chaque itération work
+// Pour chaque itération work
     works.forEach(work => {
+        getWorks()
         // Récupération de la div gallery
         let gallery = document.querySelector(".gallery")
         // Création des figures où placer les images et titres
@@ -39,64 +39,12 @@ function processWorks(works) {
         figure.appendChild(workTitle)
     });
 }
-document.addEventListener('DOMContentLoaded', () => {
-    getWorks()
-  });
 
-//*****************/ GESTION DES CATÉGORIES /*****************//
+document.addEventListener('DOMContentLoaded', async () => {
+    // on stock les données au chargement de la page
+    const works = await getWorks()
+    // Utilise les oeuvres récupérés
+    processWorks(works)
+});
 
-  // URL DE L'API CATEGORIES
-  const urlCategories = 'http://localhost:5678/api/categories'
-  // Fonction de récupération des categories via l'API
-  async function getCategories (){
-    // Récupération des categories dans l'API
-    const responseCategories = await fetch(urlCategories)
-    // Si récupération ok alors ...
-    if (responseCategories.ok) {
-        let categories = await responseCategories.json()
-        // On appelle la fonction qui gère les catégories
-        processCategories(categories)
-    } else {
-        console.error("erreur lors de la récupération : ", responseCategories.status)
-    }
-}
-    // Fonction qui gère les catégories
-  function processCategories (categories,works) {
-        // On récupère le deuxième h2
-        const portfolio = document.querySelectorAll("h2")[1]
-        // On crée une div pour insérer les boutons
-        let buttonDiv = document.createElement("div")
-        buttonDiv.className = "button_container"
-        // On insère la div au niveau du H2
-        portfolio.appendChild(buttonDiv)
-        // Création du bouton "Tous"
-        let buttonCategories = document.createElement("button")
-        buttonDiv.appendChild(buttonCategories)
-        buttonCategories.textContent = "Tous"
 
-    // Pour chaque categorie on crée un bouton
-    categories.forEach(category => {
-        // On crée les boutons
-        let buttonCategories = document.createElement("button")
-        // On insère les boutons dans la div
-        buttonDiv.appendChild(buttonCategories)
-        // ON insère le nom des catégories dans les boutons
-        buttonCategories.textContent = category.name
-    })
-
-    
-  }
-
-  document.addEventListener('DOMContentLoaded', () => {
-    getCategories()
-  });
-
-//*****************/ GESTION DES FILTRES /*****************//
-
-// let buttonObjet = document.querySelectorAll("button")[1]
-//     buttonObjet.addEventListener("click", function (){
-//         console.log(works)
-//     })
-
-// const filterObjets = works.filter(element => 
-//     element.name === "objet")
