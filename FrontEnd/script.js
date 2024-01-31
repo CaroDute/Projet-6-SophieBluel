@@ -1,11 +1,7 @@
-//*****************/ VARIABLES /*****************//
-
-
 //*****************/ GESTION DES WORKS /*****************//
 
 // URL de l'API WORKS
 const urlWorks = 'http://localhost:5678/api/works'
-
 
 // Fonction de récupération des works via l'API
 async function getWorks () {
@@ -20,7 +16,7 @@ async function getWorks () {
     }
 }
  
-// Fonction de traitement des works
+// Affichage des works dans le DOM 
 async function processWorks() {
     const worksArray = await getWorks()
 // Pour chaque itération work
@@ -29,7 +25,8 @@ async function processWorks() {
     })
 }
 
-function createWorks(work) {
+    // Création des works dans le HTML 
+    function createWorks(work) {
         // Création des figures où placer les images et titres
         const figure = document.createElement("figure")
         const gallery = document.querySelector(".gallery")
@@ -49,12 +46,12 @@ function createWorks(work) {
 
 
 
-document.addEventListener('DOMContentLoaded', async () => {
+// document.addEventListener('DOMContentLoaded', async () => {
     // on stock les données au chargement de la page
-    worksArray = await getWorks()
+    getWorks()
     // Utilise les oeuvres récupérés
     processWorks()
-});
+// });
 
 
 //*****************/ GESTION DES CATEGORIES /*****************//
@@ -78,7 +75,7 @@ async function getCategories(){
 // Fonction de traitement des categories
 async function processCategories () {
     const categoriesArray = await getCategories()
-
+    
     // On récupère le deuxième h2
     const portfolio = document.querySelectorAll("h2")[1]
     // On crée une div pour insérer les boutons
@@ -100,34 +97,42 @@ async function processCategories () {
      buttonDiv.appendChild(buttonCategories)
     // On insère le nom des catégories dans les boutons
     buttonCategories.textContent = category.name
+    // On récupère l'id
     buttonCategories.id = category.id
-    buttonCategories.name = category.name
 })
-
 filteredCategories()
-
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
-categoriesArray = await getCategories();
+// document.addEventListener('DOMContentLoaded', async () => {
 processCategories()
-});
+// });
+
 
 async function filteredCategories () {
+    // Récupération du tableau des works
     const worksArray = await getWorks()
+    // On selectionne les boutons dans le DOM
     const buttons = document.querySelectorAll(".button_container button")
+    // Pour chaque bouton on ajoute un addEventListener au click
     buttons.forEach(button => {
-        button.addEventListener('click', (workId) => {
-            const buttonId = workId.target.id 
+        button.addEventListener('click', (event) => {
+            // On récupère l'id du bouton cliqué
+            const buttonId = event.target.id 
             const gallery = document.querySelector(".gallery")
+            // On vide la gallery avant de la filtrer
             gallery.innerHTML = ""
+            // Si l'id est different de "0"
             if (buttonId !== "0") {
-                const filteredWorks = worksArray.filter(work => {
-                    return work.categoryId == buttonId
+                // On crée un nouveau tableau et on filtre l'ancien
+                const filteredWorks = worksArray.filter(element => {
+                    // Condition : on les récupère si ID category = id button cliqué 
+                    return element.categoryId == buttonId
                 })
+                // Pour chaque work filtrée on crée un élément dans la gallery
                 filteredWorks.forEach(work => {
                     createWorks(work)
                 });
+                // Sinon tout les works 
             }else {
                 processWorks()
             } 
