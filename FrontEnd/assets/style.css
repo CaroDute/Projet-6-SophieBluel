@@ -133,10 +133,9 @@ li:hover {
 	margin-bottom: 35px;
 	display: flex;
 	justify-content: center;
-
 }
 
-.button_categorie {
+button {
 	border-radius: 20px;
 	margin-right: 15px;
 	font-size:16px;
@@ -148,7 +147,7 @@ li:hover {
 	font-family: 'Syne';
 }
 
-.button_categorie:hover {
+button:hover {
 	background-color: #1d6154;
 	color: white;
 }
