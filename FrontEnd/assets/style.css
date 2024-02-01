@@ -30,7 +30,14 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
+	background-color: #fffef9;
 }
+
+a {
+	text-decoration: none;
+	color: black;
+}
+
 ol, ul {
 	list-style: none;
 }
@@ -214,3 +221,57 @@ footer nav ul {
 	margin: 2em
 }
 
+footer nav ul li {
+	font-size: 14px;
+	font-weight: 300;
+}
+
+/* Style page login */
+
+.login_container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.login label {
+	display: flex;
+	margin-top: 37px;
+	margin-bottom: 7px;
+	width: 379px;
+}
+
+.input_form {
+	height: 51px;
+	border: none;
+	box-shadow: 0px 4px 14px 0px #00000017;
+}
+
+.input_connexion {
+	margin-top: 30px;
+	border: solid 1px;
+	padding: 10px 39px;
+}
+
+.login {
+	margin-bottom: 355px;
+}
+
+.login label {
+	color: #3d3d3d;
+}
+.login form {
+	display: flex;
+	flex-direction: column;
+}
+
+.login a {
+	display: flex;
+	justify-content: center;
+	color: #3d3d3d;
+}
+
+.login a:hover {
+	text-decoration:underline;
+}

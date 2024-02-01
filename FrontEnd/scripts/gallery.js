@@ -3,11 +3,15 @@
 // URL de l'API WORKS
 const urlWorks = 'http://localhost:5678/api/works'
 
+document.addEventListener('DOMContentLoaded', async () => {
+    const gallery = document.querySelector(".gallery")
+});
+
+
 // Fonction de récupération des works via l'API
 async function getWorks () {
         // fetch pour requête GET à l'API
         const response = await fetch(urlWorks)
-
     if(response.ok) {
         return await response.json()
     } else {
@@ -15,7 +19,7 @@ async function getWorks () {
         console.error('erreur lors de la récupération des works', response.status)
     }
 }
- 
+
 // Affichage des works dans le DOM 
 async function processWorks() {
     const worksArray = await getWorks()
@@ -29,7 +33,6 @@ async function processWorks() {
     function createWorks(work) {
         // Création des figures où placer les images et titres
         const figure = document.createElement("figure")
-        const gallery = document.querySelector(".gallery")
         gallery.appendChild(figure)
         // Création des img dans le HTML
         const workImage = document.createElement("img")
@@ -44,16 +47,13 @@ async function processWorks() {
         figure.appendChild(workTitle)
     }
 
-
-
-// document.addEventListener('DOMContentLoaded', async () => {
-    // on stock les données au chargement de la page
-    getWorks()
-    // Utilise les oeuvres récupérés
-    processWorks()
-// });
-
-
+    document.addEventListener('DOMContentLoaded', async () => {
+          // on stock les données au chargement de la page
+          getWorks()
+          // Utilise les oeuvres récupérés
+          processWorks()
+    });
+ 
 //*****************/ GESTION DES CATEGORIES /*****************//
 
 // URL DE L'API CATEGORIES
@@ -118,7 +118,6 @@ async function filteredCategories () {
         button.addEventListener('click', (event) => {
             // On récupère l'id du bouton cliqué
             const buttonId = event.target.id 
-            const gallery = document.querySelector(".gallery")
             // On vide la gallery avant de la filtrer
             gallery.innerHTML = ""
             // Si l'id est different de "0"
@@ -138,6 +137,5 @@ async function filteredCategories () {
             } 
         })
     })        
-}        
-    
+}       
 
