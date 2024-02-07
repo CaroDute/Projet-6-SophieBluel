@@ -2,10 +2,9 @@
 
 // URL de l'API WORKS
 const urlWorks = 'http://localhost:5678/api/works'
-
-document.addEventListener('DOMContentLoaded', async () => {
-    const gallery = document.querySelector(".gallery")
-});
+const gallery = document.querySelector(".gallery")
+const logout = document.querySelector(".logout")
+const token = sessionStorage.getItem("token");
 
 
 // Fonction de récupération des works via l'API
@@ -47,12 +46,10 @@ async function processWorks() {
         figure.appendChild(workTitle)
     }
 
-    document.addEventListener('DOMContentLoaded', async () => {
-          // on stock les données au chargement de la page
-          getWorks()
-          // Utilise les oeuvres récupérés
-          processWorks()
-    });
+
+// Utilise les oeuvres récupérés
+    processWorks()
+
  
 //*****************/ GESTION DES CATEGORIES /*****************//
 
@@ -76,13 +73,13 @@ async function getCategories(){
 async function processCategories () {
     const categoriesArray = await getCategories()
     
-    // On récupère le deuxième h2
-    const portfolio = document.querySelectorAll("h2")[1]
+    // On récupère la div ou on va placer les boutons
+    const projectDiv = document.querySelector(".project")
     // On crée une div pour insérer les boutons
     let buttonDiv = document.createElement("div")
     buttonDiv.className = "button_container"
-    // On insère la div au niveau du H2
-    portfolio.appendChild(buttonDiv)
+    // On insère la div au niveau de la div project
+    projectDiv.insertAdjacentElement('afterend', buttonDiv)
     // Création du bouton "Tous"
     let buttonAllCategories = document.createElement("button")
     buttonDiv.appendChild(buttonAllCategories)
@@ -93,6 +90,7 @@ async function processCategories () {
     // Pour chaque categorie on crée un bouton
     categoriesArray.forEach(category => {
     let buttonCategories = document.createElement("button")
+    buttonCategories.className = "buttons"
     // On insère les boutons dans la div
      buttonDiv.appendChild(buttonCategories)
     // On insère le nom des catégories dans les boutons
@@ -100,12 +98,11 @@ async function processCategories () {
     // On récupère l'id
     buttonCategories.id = category.id
 })
-filteredCategories()
-}
 
-// document.addEventListener('DOMContentLoaded', async () => {
-processCategories()
-// });
+filteredCategories()
+getToken ()
+
+}
 
 
 async function filteredCategories () {
@@ -137,5 +134,22 @@ async function filteredCategories () {
             } 
         })
     })        
-}       
+}      
 
+function getToken () {
+const adminMode = document.querySelector(".admin-mode");
+const filterButton = document.querySelector(".button_container");
+const modifButton = document.querySelector(".modif-button");
+console.log(token);
+
+if (token === null) {
+    adminMode.style.display = "none";
+    modifButton.style.display = "none";
+} else {
+    adminMode.style.display = "block";
+    filterButton.style.visibility = "hidden";
+    logout.innerHTML = 'logout'
+}
+}
+
+processCategories()

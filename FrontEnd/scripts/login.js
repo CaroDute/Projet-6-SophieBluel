@@ -25,31 +25,28 @@ form.addEventListener("submit", (evt) => {
     body: chargeUtile
   })
 
+  // 1er then pour traiter la réponse de la requête
   .then(response => {
     if (!response.ok) {
-      throw new Error('Erreur de connexion');
+      alert('Erreur dans l’identifiant ou le mot de passe');
     }
     // Si la réponse est OK, on retourne la réponse au format JSON
     return response.json();
   })
+  // 2ème then pour traiter les données JSON
     .then(data => {
       // data contient le token d'authentification
       const token = data.token;
       // Faites ce que vous devez faire avec le token ici
-      console.log('Token d\'authentification:', token);
+      if (token !== undefined){
+      sessionStorage.setItem('token', token)
+      document.location.href="./index.html"
+    }else {
+      document.location.href=""
+    }
     })
     .catch(error => {
-      console.error('Erreur lors de la connexion:', error);
+      alert('Erreur lors de la connexion:', error);
     });
+
 })
-
-
-
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwNzI0NDc5NSwiZXhwIjoxNzA3MzMxMTk1fQ.dhDSaWk411bVsZvwV7pjLzleCZiueQgYAcacZ2VhF60
-
-
-// if (email.value === 'sophie.bluel@test.tld' && password.value === 'S0phie') {
-//     console.log('hello');
-//   } else if (email.value !== 'sophie.bluel@test.tld' || password.value !== 'S0phie') {
-//     console.log("Erreur dans l’identifiant ou le mot de passe")
-//   }
