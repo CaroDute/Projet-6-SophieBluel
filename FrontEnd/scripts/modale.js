@@ -1,17 +1,28 @@
 const modal = document.querySelector('.modal')
 const buttonModif = document.querySelector('.modif-button')
 const modalGallery = document.querySelector('.modal-gallery')
+const buttonClose = document.querySelector('.xmark')
 
 buttonModif.addEventListener('click', openModal)
+buttonClose.addEventListener('click', closeModal)
+
+
+window.addEventListener('click', function (e) {
+  if (e.target === modal) {
+    closeModal()
+  }
+})
 
 processWorks()
-
-
-
 
 function openModal () {
   modal.style.visibility = "visible"
 }
+
+function closeModal () {
+  modal.style.visibility = 'hidden'
+}
+
 
 async function processWorks() {
   const worksArray = await getWorks()
@@ -20,6 +31,8 @@ async function processWorks() {
       createWorksModal(work)
   })
 }
+
+
 
 /* Création de la gallery dans la modale */
 
@@ -43,5 +56,5 @@ async function processWorks() {
   trash.innerHTML = '<i class="fa-solid fa-trash-can"></i>'
   trash.className = 'trash'
   trashBackground.appendChild(trash)
-  
 }
+
