@@ -1,13 +1,15 @@
 const modal = document.querySelector('.modal')
 const modalGallery = document.querySelector('.modal-gallery')
-const buttonDelete = document.querySelector('.trash-background')
+
 const buttonModif = document.querySelector('.modif-button')
 const buttonClose = document.querySelector('.xmark')
 
 
 
+
 buttonModif.addEventListener('click', openModal)
 buttonClose.addEventListener('click', closeModal)
+
 
 processWorksModal()
 
@@ -26,9 +28,7 @@ function closeModal () {
   modal.style.visibility = 'hidden'
 }
 
-// function deleteWorks () {
-//   console.log('hello')
-// }
+
 
 
 async function processWorksModal() {
@@ -54,13 +54,36 @@ async function processWorksModal() {
   workImage.src = work.imageUrl
   // Mise en place des images et des titres dans la div gallery
   figure.appendChild(workImage)
-  
   const trash = document.createElement('i')
+  trash.id = work.id
   const trashBackground = document.createElement('span')
   trashBackground.className = 'trash-background'
   figure.appendChild(trashBackground)
   trash.innerHTML = '<i class="fa-solid fa-trash-can"></i>'
   trash.className = 'trash'
   trashBackground.appendChild(trash)
+
+
 }
+
+
+// async function deleteWorks () {
+//   const trashAll = document.querySelectorAll('.trash')
+//   trashAll.forEach(trash => {
+//     trash.addEventListener('click', (e) => {
+//       const id = trash.id
+//       fetch (`http://localhost:5678/api/works/${id}`,{
+//       method: 'DELETE',
+//       headers: {
+//         Authorization: `Bearer ${token}` 
+//       }
+//       })
+//       .then (response => response.json()) 
+//       .then (response => console.log(response))
+//     })
+//     })
+//   }
+
+  
+
 

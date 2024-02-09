@@ -160,14 +160,3 @@ function getToken () {
     
 
 processCategories()
-
-
-
-//   if (token === null) {
-//     adminMode.style.display = "none";
-//     modifButton.style.display = "none";
-// } else {
-//     adminMode.style.display = "block";
-//     filterButton.style.visibility = "hidden";
-//     logout.innerHTML = 'logout'
-// }
