@@ -1,11 +1,11 @@
 //*****************/ GESTION DES WORKS /*****************//
 
-// URL de l'API WORKS
+// VARIABLES //
 const urlWorks = 'http://localhost:5678/api/works'
 const gallery = document.querySelector(".gallery")
 const logout = document.querySelector(".logout")
 const token = sessionStorage.getItem("token");
-
+const projectDiv = document.querySelector(".project")
 
 // Fonction de récupération des works via l'API
 async function getWorks () {
@@ -73,8 +73,6 @@ async function getCategories(){
 async function processCategories () {
     const categoriesArray = await getCategories()
     
-    // On récupère la div ou on va placer les boutons
-    const projectDiv = document.querySelector(".project")
     // On crée une div pour insérer les boutons
     let buttonDiv = document.createElement("div")
     buttonDiv.className = "button_container"
@@ -98,10 +96,8 @@ async function processCategories () {
     // On récupère l'id
     buttonCategories.id = category.id
 })
-
 filteredCategories()
 getToken ()
-
 }
 
 
@@ -111,7 +107,7 @@ async function filteredCategories () {
     // On selectionne les boutons dans le DOM
     const buttons = document.querySelectorAll(".button_container button")
     // Pour chaque bouton on ajoute un addEventListener au click
-    buttons.forEach(button => {
+    buttons.forEach((button) => {
         button.addEventListener('click', (event) => {
             // On récupère l'id du bouton cliqué
             const buttonId = event.target.id 
@@ -125,7 +121,7 @@ async function filteredCategories () {
                     return element.categoryId == buttonId
                 })
                 // Pour chaque work filtrée on crée un élément dans la gallery
-                filteredWorks.forEach(work => {
+                filteredWorks.forEach((work) => {
                     createWorks(work)
                 });
                 // Sinon tout les works 
@@ -136,20 +132,42 @@ async function filteredCategories () {
     })        
 }      
 
-function getToken () {
-const adminMode = document.querySelector(".admin-mode");
-const filterButton = document.querySelector(".button_container");
-const modifButton = document.querySelector(".modif-button");
-console.log(token);
+    const modifButton = document.createElement("button");
+    projectDiv.appendChild(modifButton)
+    modifButton.className = "modif-button"
+    modifButton.innerHTML = '<i class="fa-regular fa-pen-to-square"></i> modifier'
 
-if (token === null) {
-    adminMode.style.display = "none";
-    modifButton.style.display = "none";
-} else {
-    adminMode.style.display = "block";
-    filterButton.style.visibility = "hidden";
-    logout.innerHTML = 'logout'
-}
-}
+
+function getToken () {
+    const adminMode = document.querySelector(".admin-mode");
+    const filterButton = document.querySelector(".button_container");
+    if (token === null) {
+        adminMode.remove()
+        modifButton.remove()
+        modal.remove()
+    } else {
+        filterButton.style.visibility = "hidden";
+        logout.innerHTML = 'logout'
+    }
+    }
+
+    logout.addEventListener('click', logoutSession)
+
+    function logoutSession (){
+        sessionStorage.removeItem('token')
+        location.reload()
+    }
+    
 
 processCategories()
+
+
+
+//   if (token === null) {
+//     adminMode.style.display = "none";
+//     modifButton.style.display = "none";
+// } else {
+//     adminMode.style.display = "block";
+//     filterButton.style.visibility = "hidden";
+//     logout.innerHTML = 'logout'
+// }

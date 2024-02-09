@@ -1,11 +1,15 @@
 const modal = document.querySelector('.modal')
-const buttonModif = document.querySelector('.modif-button')
 const modalGallery = document.querySelector('.modal-gallery')
+const buttonDelete = document.querySelector('.trash-background')
+const buttonModif = document.querySelector('.modif-button')
 const buttonClose = document.querySelector('.xmark')
+
+
 
 buttonModif.addEventListener('click', openModal)
 buttonClose.addEventListener('click', closeModal)
 
+processWorksModal()
 
 window.addEventListener('click', function (e) {
   if (e.target === modal) {
@@ -13,8 +17,7 @@ window.addEventListener('click', function (e) {
   }
 })
 
-processWorks()
-
+  
 function openModal () {
   modal.style.visibility = "visible"
 }
@@ -23,8 +26,12 @@ function closeModal () {
   modal.style.visibility = 'hidden'
 }
 
+// function deleteWorks () {
+//   console.log('hello')
+// }
 
-async function processWorks() {
+
+async function processWorksModal() {
   const worksArray = await getWorks()
 // Pour chaque itération work
   worksArray.forEach(work => {
@@ -35,7 +42,6 @@ async function processWorks() {
 
 
 /* Création de la gallery dans la modale */
-
  // Création des works dans la modale 
  function createWorksModal(work) {
   // Création des figures où placer les images et titres
