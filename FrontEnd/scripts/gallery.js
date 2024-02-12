@@ -146,6 +146,7 @@ function getToken () {
         adminMode.remove()
         modifButton.remove()
         modal.remove()
+        modal2.remove()
     } else {
         filterButton.style.visibility = "hidden";
         logout.innerHTML = 'logout'

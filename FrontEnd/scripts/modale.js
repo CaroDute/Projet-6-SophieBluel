@@ -1,19 +1,25 @@
 const modal = document.querySelector('.modal')
+const modal2 = document.querySelector('.modal2')
 const modalGallery = document.querySelector('.modal-gallery')
 const buttonModif = document.querySelector('.modif-button')
-const buttonClose = document.querySelector('.xmark')
+const buttonClose = document.querySelectorAll('.xmark')
+const buttonAdd = document.querySelector('.button-add-photo')
+
+console.log(buttonClose)
 
 
-
-
+buttonAdd.addEventListener('click', openModal2)
 buttonModif.addEventListener('click', openModal)
-buttonClose.addEventListener('click', closeModal)
+
+buttonClose.forEach(button => {
+  button.addEventListener('click', closeModal)
+})
 
 
 processWorksModal()
 
 window.addEventListener('click', function (e) {
-  if (e.target === modal) {
+  if (e.target === modal || e.target === modal2) {
     closeModal()
   }
 })
@@ -21,10 +27,22 @@ window.addEventListener('click', function (e) {
   
 function openModal () {
   modal.style.visibility = "visible"
+  if (modal2.style.visibility === "visible"){
+    modal.style.visibility = "hidden"
+  }
 }
+
+function openModal2 () {
+  modal2.style.visibility = "visible"
+  if (modal.style.visibility === "visible") {
+    modal.style.visibility = "hidden";
+  }
+}
+
 
 function closeModal () {
   modal.style.visibility = 'hidden'
+  modal2.style.visibility = 'hidden'
 }
 
 async function processWorksModal() {
