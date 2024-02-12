@@ -1,6 +1,5 @@
 const modal = document.querySelector('.modal')
 const modalGallery = document.querySelector('.modal-gallery')
-
 const buttonModif = document.querySelector('.modif-button')
 const buttonClose = document.querySelector('.xmark')
 
@@ -28,9 +27,6 @@ function closeModal () {
   modal.style.visibility = 'hidden'
 }
 
-
-
-
 async function processWorksModal() {
   const worksArray = await getWorks()
 // Pour chaque itération work
@@ -43,9 +39,10 @@ async function processWorksModal() {
 
 /* Création de la gallery dans la modale */
  // Création des works dans la modale 
- function createWorksModal(work) {
+function createWorksModal(work) {
   // Création des figures où placer les images et titres
   const figure = document.createElement("figure")
+  figure.id = `figure-${work.id}`
   modalGallery.appendChild(figure)
   // Création des img dans le HTML
   const workImage = document.createElement("img")
@@ -59,30 +56,45 @@ async function processWorksModal() {
   const trashBackground = document.createElement('span')
   trashBackground.className = 'trash-background'
   figure.appendChild(trashBackground)
-  trash.innerHTML = '<i class="fa-solid fa-trash-can"></i>'
-  trash.className = 'trash'
+  trash.className = 'trash fa-solid fa-trash-can'
   trashBackground.appendChild(trash)
-
-
+ 
 }
 
 
-// async function deleteWorks () {
-//   const trashAll = document.querySelectorAll('.trash')
-//   trashAll.forEach(trash => {
-//     trash.addEventListener('click', (e) => {
-//       const id = trash.id
-//       fetch (`http://localhost:5678/api/works/${id}`,{
-//       method: 'DELETE',
-//       headers: {
-//         Authorization: `Bearer ${token}` 
-//       }
-//       })
-//       .then (response => response.json()) 
-//       .then (response => console.log(response))
-//     })
-//     })
-//   }
+
+document.addEventListener('click', function(event) {
+  if (event.target.classList.contains('trash')) {
+  const workId = event.target.id
+    deleteWorks(workId)
+    deleteWorksGallery (workId)
+  }
+})
+
+
+function deleteWorks (workId) {
+
+  fetch (`http://localhost:5678/api/works/${workId}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization':`Bearer ${token}`,
+      'Content-Type':'application/json'
+    },
+  })
+  .then(response => {
+    if(!response.ok) {
+      throw new Error('Erreur lors de la suppression du travail')
+    } else {
+      console.log(`le travail ${workId} a été supprimé avec succès`)
+      const workElementDelete = document.getElementById(`figure-${workId}`)
+      workElementDelete.remove()
+    }
+  })
+  .catch(error => {
+    console.error('Erreur: ', error)
+  })
+}
+
 
   
 

@@ -32,6 +32,7 @@ async function processWorks() {
     function createWorks(work) {
         // Création des figures où placer les images et titres
         const figure = document.createElement("figure")
+        figure.id = `gallery-figure-${work.id}`
         gallery.appendChild(figure)
         // Création des img dans le HTML
         const workImage = document.createElement("img")
@@ -160,3 +161,9 @@ function getToken () {
     
 
 processCategories()
+
+// Fonction de suppression dynamique des travaux dans la gallery //
+    function deleteWorksGallery (workId) {
+    const workElementDelete = document.getElementById(`gallery-figure-${workId}`)
+    workElementDelete.remove()
+}
