@@ -416,6 +416,85 @@ margin: auto;
 	cursor: pointer;
 }
 
+/* Style de la deuxième modale */
+
+.modal2 .modal-container {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+
+.modal2 .fa-image {
+	font-size: 76px;
+	color: #b9c5cc;
+}
+
+.modal2 p {
+	color: #444444;
+	font-size: 10px;
+}
+
+.modal2 label {
+	font-size: 14px;
+	font-weight: 500;
+	cursor: pointer;
+}
+
+.add-button {
+	background-color: #cbd6dc;
+	width: 173px;
+	height: 36px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius:50px ;
+	cursor: pointer;
+}
+
+.add-img {
+	background-color: #e7f1f6;
+	width: 420px;
+	height: 169px;
+	justify-content: center;
+	align-items: center;
+	border-radius: 3px;
+	color: #306685;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.add-input {
+	display: none;
+}
+
+.form-add {
+	display: flex;
+	flex-direction: column;
+	width: 420px;
+	margin-top: 10px;
+}
+
+.form-add input {
+	margin-top: 10px;
+}
+
+.form-add label {
+	margin-top:21px ;
+	color: #3d3d3d;
+}
+
+.button-validation {
+	width: 237px;
+	justify-content: center;
+}
+
+.modal2 .line {
+	height: 1px;
+  background-color: #B3B3B3;
+  width: 420px;
+}
+
 /* Corbeille sur image */
 
 .modal-gallery figure {
