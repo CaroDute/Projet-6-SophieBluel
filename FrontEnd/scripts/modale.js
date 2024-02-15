@@ -36,23 +36,37 @@ function openModal2 () {
   if (modal.style.visibility === "visible") {
     modal.style.visibility = "hidden";
   }
-  if (titleValue === '') {
+  if (titleValue === '' || categoryId === '' || !image) {
   buttonValidation.classList.add('button-validation-wait')
   }
 }
 
-  const titleInput = document.getElementById('title');
-  const titleValue = titleInput.value.trim()
+const titleInput = document.getElementById('title');
+const titleValue = titleInput.value.trim();
+const categorySelect = document.getElementById('categorie');
+const imageInput = document.getElementById('add-input');
 
-  titleInput.addEventListener('keyup', function () {
-    const titleValue = titleInput.value.trim()
-    if (titleValue !== '') {
-  buttonValidation.classList.remove('button-validation-wait')
-  } if (titleValue === '') {
-    buttonValidation.classList.add('button-validation-wait')
+// Fonction pour vérifier la validité de tous les champs
+function checkFormValidity() {
+    const titleValue = titleInput.value.trim();
+    const selectedIndex = categorySelect.selectedIndex;
+    const categoryId = categorySelect.options[selectedIndex].id;
+    const image = imageInput.files[0];
+
+    if (titleValue !== '' && categoryId !== '' && image) {
+        buttonValidation.classList.remove('button-validation-wait');
+    } else {
+        buttonValidation.classList.add('button-validation-wait');
     }
-  })
-  
+}
+
+// Écouter les événements de changement pour tous les champs
+titleInput.addEventListener('keyup', checkFormValidity);
+categorySelect.addEventListener('change', checkFormValidity);
+imageInput.addEventListener('change', checkFormValidity);
+
+// Appeler la fonction une fois pour initialiser la classe de validation
+checkFormValidity();
 
 
 
