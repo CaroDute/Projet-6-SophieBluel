@@ -4,6 +4,8 @@ const modalGallery = document.querySelector('.modal-gallery')
 const buttonModif = document.querySelector('.modif-button')
 const buttonClose = document.querySelectorAll('.xmark')
 const buttonAdd = document.querySelector('.button-add-photo')
+const buttonValidation = document.querySelector('.button-validation')
+
 
 buttonAdd.addEventListener('click', openModal2)
 buttonModif.addEventListener('click', openModal)
@@ -34,7 +36,24 @@ function openModal2 () {
   if (modal.style.visibility === "visible") {
     modal.style.visibility = "hidden";
   }
+  if (titleValue === '') {
+  buttonValidation.classList.add('button-validation-wait')
+  }
 }
+
+  const titleInput = document.getElementById('title');
+  const titleValue = titleInput.value.trim()
+
+  titleInput.addEventListener('keyup', function () {
+    const titleValue = titleInput.value.trim()
+    if (titleValue !== '') {
+  buttonValidation.classList.remove('button-validation-wait')
+  } if (titleValue === '') {
+    buttonValidation.classList.add('button-validation-wait')
+    }
+  })
+  
+
 
 
 function closeModal () {
@@ -129,6 +148,11 @@ async function processCategoriesModal () {
 
 processCategoriesModal()
 
+
+buttonValidation.addEventListener('click', function () {
+  postWorks ()
+})
+
 function postWorks () {
   const image = document.getElementById('add-input').files[0]
   const title = document.getElementById('title').value
@@ -189,10 +213,7 @@ function postWorks () {
 })
 }
 
-const buttonValidation = document.querySelector('.button-validation')
-buttonValidation.addEventListener('click', function () {
-  postWorks ()
-})
+
 
 
 function addImgGallery (imageUrl, title) {

@@ -458,8 +458,7 @@ margin: auto;
 	background-color: #e7f1f6;
 	width: 420px;
 	height: 169px;
-	/* padding-top: 20px;
-	padding-bottom: 20px; */
+
 	justify-content: center;
 	align-items: center;
 	border-radius: 3px;
@@ -493,6 +492,10 @@ margin: auto;
 .button-validation {
 	width: 237px;
 	justify-content: center;
+}
+
+.button-validation-wait {
+	background-color: #a7a7a7;
 }
 
 .modal2 .line {
