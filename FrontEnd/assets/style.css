@@ -177,6 +177,7 @@ button:hover {
 
 .gallery img {
 	width: 100%;
+	max-height: 490px;
 }
 
 
@@ -350,11 +351,10 @@ align-items: center;
 margin: auto;
 }
 
-
-
 .logout {
 	cursor: pointer;
 }
+
 
 /* Style de la première modale */
 
@@ -406,6 +406,7 @@ margin: auto;
 
 .work-image {
 	width: 100%;
+	max-height: 135px;
 }
 
 .xmark {
@@ -425,7 +426,7 @@ margin: auto;
 }
 
 .modal2 .fa-image {
-	font-size: 76px;
+	font-size: 74px;
 	color: #b9c5cc;
 }
 
@@ -451,10 +452,14 @@ margin: auto;
 	cursor: pointer;
 }
 
+
+
 .add-img {
 	background-color: #e7f1f6;
 	width: 420px;
 	height: 169px;
+	/* padding-top: 20px;
+	padding-bottom: 20px; */
 	justify-content: center;
 	align-items: center;
 	border-radius: 3px;
@@ -477,12 +482,13 @@ margin: auto;
 
 .form-add input {
 	margin-top: 10px;
+	margin-bottom: 21px;
 }
 
 .form-add label {
 	margin-top:21px ;
 	color: #3d3d3d;
-}
+}  
 
 .button-validation {
 	width: 237px;
@@ -493,7 +499,25 @@ margin: auto;
 	height: 1px;
   background-color: #B3B3B3;
   width: 420px;
+} 
+
+#categorie { 
+	margin-top: 10px;
+	height: 51px;
+	width:420px ;
+	border: none;
+	box-shadow: 0px 4px 14px 0px #00000017; 
+	position: relative;
+	border-right: 20px solid transparent;
+	color: #6c6c6c;
 }
+
+#image {
+	width: auto;
+	height:100%;
+	overflow: hidden;
+	display: none;
+} 
 
 /* Corbeille sur image */
 

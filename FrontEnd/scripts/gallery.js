@@ -73,6 +73,7 @@ async function getCategories(){
 // Fonction de traitement des categories
 async function processCategories () {
     const categoriesArray = await getCategories()
+
     
     // On crée une div pour insérer les boutons
     let buttonDiv = document.createElement("div")
@@ -168,3 +169,44 @@ processCategories()
     const workElementDelete = document.getElementById(`gallery-figure-${workId}`)
     workElementDelete.remove()
 }
+
+// Affichage de l'aperçu de l'image uploader
+
+const inputPhoto = document.getElementById('add-input')
+const image = document.getElementById('image')
+const addButton = document.querySelector('.add-button')
+const imgIcon = document.querySelector('.add-img i')
+const sizeInfo = document.querySelector('.size-info')
+const addLabel = document.querySelector('.add-label')
+
+inputPhoto.onchange = function(event) {
+    const file = event.target.files[0]
+    const reader = new FileReader()
+
+    const maxSize = 4 * 1024 * 1024
+    const typeOfFile = ['image/jpeg', 'image/png']
+
+    if (file.size > maxSize){
+        alert('Le fichier ne doit pas dépassé 4Mo. Veuillez en selectionner un autre')
+        inputPhoto.value = ''
+        return
+    }
+
+    if (!typeOfFile.includes(file.type)) {
+        alert("Le type de fichier sélectionné n'est pas le bon. Veuillez en selectionner un autre" )
+        inputPhoto.value = ''
+        return
+    }
+
+    reader.onload = function(e) {
+        image.src = e.target.result
+        image.style.display = 'block'
+        imgIcon.style.display = 'none'
+        sizeInfo.style.display = 'none'
+        addButton.style.display = 'none'
+    }
+
+    reader.readAsDataURL(file)
+}
+
+
