@@ -1,3 +1,4 @@
+// VARIABLES //
 const modal = document.querySelector('.modal')
 const modal2 = document.querySelector('.modal2')
 const modalGallery = document.querySelector('.modal-gallery')
@@ -5,7 +6,10 @@ const buttonModif = document.querySelector('.modif-button')
 const buttonClose = document.querySelectorAll('.xmark')
 const buttonAdd = document.querySelector('.button-add-photo')
 const buttonValidation = document.querySelector('.button-validation')
-
+const titleInput = document.getElementById('title');
+const titleValue = titleInput.value.trim();
+const categorySelect = document.getElementById('categorie');
+const imageInput = document.getElementById('add-input');
 
 buttonAdd.addEventListener('click', openModal2)
 buttonModif.addEventListener('click', openModal)
@@ -14,23 +18,19 @@ buttonClose.forEach(button => {
   button.addEventListener('click', closeModal)
 })
 
-
 processWorksModal()
 
-window.addEventListener('click', function (e) {
-  if (e.target === modal || e.target === modal2) {
-    closeModal()
-  }
-})
 
-  
+
+// Fonction d'ouverture de la 1ère Modale
 function openModal () {
   modal.style.visibility = "visible"
   if (modal2.style.visibility === "visible"){
     modal.style.visibility = "hidden"
   }
+  
 }
-
+// Fonction d'ouverture de la 2ème Modale
 function openModal2 () {
   modal2.style.visibility = "visible"
   if (modal.style.visibility === "visible") {
@@ -41,12 +41,25 @@ function openModal2 () {
   }
 }
 
-const titleInput = document.getElementById('title');
-const titleValue = titleInput.value.trim();
-const categorySelect = document.getElementById('categorie');
-const imageInput = document.getElementById('add-input');
 
-// Fonction pour vérifier la validité de tous les champs
+// Fonction de fermeture des Modales
+function closeModal () {
+  modal.style.visibility = 'hidden'
+  modal2.style.visibility = 'hidden'
+  image.style.display = 'none'
+  imgIcon.style.display = 'block'
+  sizeInfo.style.display = 'block'
+  addButton.style.display = 'flex'
+  document.getElementById('categorie').value = 0
+}
+// Fermeture des modales au clic à l'exterieur de celle-ci
+window.addEventListener('click', function (e) {
+  if (e.target === modal || e.target === modal2) {
+    closeModal()
+  }
+})
+
+// Fonction pour vérifier la validité de tous les champs dans la 2ème Modale
 function checkFormValidity() {
     const titleValue = titleInput.value.trim();
     const selectedIndex = categorySelect.selectedIndex;
@@ -68,18 +81,7 @@ imageInput.addEventListener('change', checkFormValidity);
 // Appeler la fonction une fois pour initialiser la classe de validation
 checkFormValidity();
 
-
-
-function closeModal () {
-  modal.style.visibility = 'hidden'
-  modal2.style.visibility = 'hidden'
-  image.style.display = 'none'
-  imgIcon.style.display = 'block'
-  sizeInfo.style.display = 'block'
-  addButton.style.display = 'flex'
-  document.getElementById('categorie').value = 0
-}
-
+// Fonction qui amène tout les travaux de la gallery dans la modale
 async function processWorksModal() {
   const worksArray = await getWorks()
 // Pour chaque itération work
@@ -87,8 +89,6 @@ async function processWorksModal() {
       createWorksModal(work)
   })
 }
-
-
 
 /* Création de la gallery dans la modale */
  // Création des works dans la modale 
@@ -104,6 +104,8 @@ function createWorksModal(work) {
   workImage.src = work.imageUrl
   // Mise en place des images et des titres dans la div gallery
   figure.appendChild(workImage)
+
+  // Création des corbeilles pour supprimer les travaux
   const trash = document.createElement('i')
   trash.id = work.id
   const trashBackground = document.createElement('span')
@@ -114,39 +116,6 @@ function createWorksModal(work) {
  
 }
 
-
-
-document.addEventListener('click', function(event) {
-  if (event.target.classList.contains('trash')) {
-  const workId = event.target.id
-    deleteWorks(workId)
-    deleteWorksGallery (workId)
-  }
-})
-
-
-function deleteWorks (workId) {
-
-  fetch (`http://localhost:5678/api/works/${workId}`, {
-    method: 'DELETE',
-    headers: {
-      'Authorization':`Bearer ${token}`,
-      'Content-Type':'application/json'
-    },
-  })
-  .then(response => {
-    if(!response.ok) {
-      throw new Error('Erreur lors de la suppression du travail')
-    } else {
-      console.log(`le travail ${workId} a été supprimé avec succès`)
-      const workElementDelete = document.getElementById(`figure-${workId}`)
-      workElementDelete.remove()
-    }
-  })
-  .catch(error => {
-    console.error('Erreur: ', error)
-  })
-}
 
 async function processCategoriesModal () {
   const categoriesArray = await getCategories()
@@ -166,6 +135,7 @@ processCategoriesModal()
 buttonValidation.addEventListener('click', function () {
   postWorks ()
 })
+
 
 function postWorks () {
   const image = document.getElementById('add-input').files[0]
@@ -219,7 +189,10 @@ function postWorks () {
   .then(data => {
       console.log("reponse de l'API:", data) 
       addImgGallery(data.imageUrl, title)
+      closeModal()
       addImgGalleryModal (data.imageUrl)
+      resetForm()
+
      
   })
 .catch (error => {
@@ -230,7 +203,7 @@ function postWorks () {
 
 
 
-function addImgGallery (imageUrl, title) {
+function addImgGallery (imageUrl, title){
   const imgElement = document.createElement('img')
   const figureElement = document.createElement('figure')
   gallery.appendChild(figureElement)
@@ -239,21 +212,85 @@ function addImgGallery (imageUrl, title) {
   const figCaption = document.createElement('figcaption')
   figCaption.innerText = title 
   figureElement.appendChild(figCaption)
+
 }
 
 function addImgGalleryModal (imageUrl) {
   const imgElement = document.createElement('img')
-  modalGallery.appendChild(imgElement)
+  const figure = document.createElement("figure")
+  figure.appendChild(imgElement)
+  modalGallery.appendChild(figure)
   imgElement.src = imageUrl
   imgElement.className = 'work-image'
 
-  // const trash = document.createElement('i')
-  // const trashBackground = document.createElement('span')
-  // trashBackground.className = 'trash-background'
-  // modalGallery.appendChild(trashBackground)
-  // trash.className = 'trash fa-solid fa-trash-can'
-  // trashBackground.appendChild(trash)
-
+  addBasketIcon (figure)
 }
 
 
+function addBasketIcon (figure) {
+  let images = document.querySelectorAll('img.work-image')
+  if (images) {
+    images.forEach (image => {
+     if(!image.nextElementSibling) {
+        const trash = document.createElement('i')
+        const trashBackground = document.createElement('span')
+        trashBackground.className = 'trash-background'
+        modalGallery.appendChild(figure)
+        trash.className = 'trash fa-solid fa-trash-can'
+        trashBackground.appendChild(trash)
+        figure.appendChild(trashBackground)
+     }
+    })
+  }
+}
+
+
+// Evenement pour la suppression des travaux au clic sur les corbeilles, dans la gallery principale et dans la modale 
+document.addEventListener('click', function(event) {
+  if (event.target.classList.contains('trash')) {
+  const workId = event.target.id
+  console.log(workId)
+    deleteWorks(workId)
+    deleteWorksGallery (workId) // function pour la galerie principale 
+  }
+})
+
+// Fonction de suppression dynamique des travaux dans la gallery //
+function deleteWorksGallery (workId) {
+  const workElementDelete = document.getElementById(`gallery-figure-${workId}`)
+  console.log(workElementDelete)
+  if (workElementDelete){
+  workElementDelete.remove()
+}
+}
+
+
+// Fonction pour supprimer des travaux dans la modale
+function deleteWorks (workId) {
+  fetch (`http://localhost:5678/api/works/${workId}`, {
+    method: 'DELETE',
+    headers: {
+      'Authorization':`Bearer ${token}`,
+      'Content-Type':'application/json'
+    },
+  })
+  .then(response => {
+    if(!response.ok) {
+      throw new Error('Erreur lors de la suppression du travail')
+    } else {
+      console.log(`le travail ${workId} a été supprimé avec succès`)
+      const workElementDelete = document.getElementById(`figure-${workId}`)
+      workElementDelete.remove() // Rend dynamique la suppression des travaux dans la modale
+    }
+  })
+  .catch(error => {
+    console.error('Erreur: ', error)
+  })
+}
+
+// Fonction pour réinitialiser le formulaire après l'ajout d'un travail
+function resetForm() {
+  document.getElementById('title').value = '';
+  document.getElementById('categorie').selectedIndex = 0;
+  document.getElementById('add-input').value = '';
+}

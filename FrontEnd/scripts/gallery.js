@@ -164,12 +164,6 @@ function getToken () {
 
 processCategories()
 
-// Fonction de suppression dynamique des travaux dans la gallery //
-    function deleteWorksGallery (workId) {
-    const workElementDelete = document.getElementById(`gallery-figure-${workId}`)
-    workElementDelete.remove()
-}
-
 // Affichage de l'aperçu de l'image uploader
 
 const inputPhoto = document.getElementById('add-input')
