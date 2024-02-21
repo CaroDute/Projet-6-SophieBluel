@@ -188,24 +188,23 @@ function postWorks () {
 })
   .then(data => {
       console.log("reponse de l'API:", data) 
-      addImgGallery(data.imageUrl, title)
+      console.log(data.id)
+      addImgGallery(data.imageUrl, title, data)
       closeModal()
-      addImgGalleryModal (data.imageUrl)
+      addImgGalleryModal (data.imageUrl, data)
       resetForm()
 
-     
   })
 .catch (error => {
   console.error('Erreur: ', error)
 })
 }
 
-
-
-
-function addImgGallery (imageUrl, title){
+function addImgGallery (imageUrl, title,data ){
   const imgElement = document.createElement('img')
   const figureElement = document.createElement('figure')
+  figureElement.id = `gallery-figure-${data.id}`
+  console.log(figureElement.id)
   gallery.appendChild(figureElement)
   imgElement.src = imageUrl
   figureElement.appendChild(imgElement)
@@ -215,19 +214,22 @@ function addImgGallery (imageUrl, title){
 
 }
 
-function addImgGalleryModal (imageUrl) {
+function addImgGalleryModal (imageUrl, data) {
   const imgElement = document.createElement('img')
   const figure = document.createElement("figure")
+  figure.id = `figure-${data.id}`
+  console.log(figure.id)
   figure.appendChild(imgElement)
   modalGallery.appendChild(figure)
   imgElement.src = imageUrl
   imgElement.className = 'work-image'
 
-  addBasketIcon (figure)
+  addBasketIcon (figure, data)
+
 }
 
 
-function addBasketIcon (figure) {
+function addBasketIcon (figure, data) {
   let images = document.querySelectorAll('img.work-image')
   if (images) {
     images.forEach (image => {
@@ -239,6 +241,7 @@ function addBasketIcon (figure) {
         trash.className = 'trash fa-solid fa-trash-can'
         trashBackground.appendChild(trash)
         figure.appendChild(trashBackground)
+        trash.id = data.id
      }
     })
   }
@@ -249,20 +252,11 @@ function addBasketIcon (figure) {
 document.addEventListener('click', function(event) {
   if (event.target.classList.contains('trash')) {
   const workId = event.target.id
-  console.log(workId)
     deleteWorks(workId)
-    deleteWorksGallery (workId) // function pour la galerie principale 
   }
 })
 
-// Fonction de suppression dynamique des travaux dans la gallery //
-function deleteWorksGallery (workId) {
-  const workElementDelete = document.getElementById(`gallery-figure-${workId}`)
-  console.log(workElementDelete)
-  if (workElementDelete){
-  workElementDelete.remove()
-}
-}
+
 
 
 // Fonction pour supprimer des travaux dans la modale
@@ -279,14 +273,18 @@ function deleteWorks (workId) {
       throw new Error('Erreur lors de la suppression du travail')
     } else {
       console.log(`le travail ${workId} a été supprimé avec succès`)
-      const workElementDelete = document.getElementById(`figure-${workId}`)
+      const workElementDelete = document.getElementById(`gallery-figure-${workId}`)
+      const workElementDeleteModal = document.getElementById(`figure-${workId}`)
       workElementDelete.remove() // Rend dynamique la suppression des travaux dans la modale
+      workElementDeleteModal.remove()
     }
   })
   .catch(error => {
     console.error('Erreur: ', error)
   })
 }
+
+
 
 // Fonction pour réinitialiser le formulaire après l'ajout d'un travail
 function resetForm() {
