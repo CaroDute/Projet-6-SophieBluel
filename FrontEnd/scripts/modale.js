@@ -39,6 +39,9 @@ function openModal2 () {
   if (titleValue === '' || categoryId === '' || !image) {
   buttonValidation.classList.add('button-validation-wait')
   }
+
+  // Appel de la fonction pour récupérer les categories dans le formulaire
+  processCategoriesModal()
 }
 
 
@@ -116,7 +119,7 @@ function createWorksModal(work) {
  
 }
 
-
+// Fonction pour récupérer les categories dans le formulaire
 async function processCategoriesModal () {
   const categoriesArray = await getCategories()
   const categorie = document.getElementById('categorie')
@@ -128,8 +131,6 @@ async function processCategoriesModal () {
       optionCategories.id = category.id
   })
 }
-
-processCategoriesModal()
 
 
 buttonValidation.addEventListener('click', function () {
