@@ -27,8 +27,8 @@ function openModal () {
   modal.style.visibility = "visible"
   if (modal2.style.visibility === "visible"){
     modal.style.visibility = "hidden"
-  }
-  
+  } 
+  buttonModif.style.visibility = 'hidden'
 }
 // Fonction d'ouverture de la 2ème Modale
 function openModal2 () {
@@ -39,9 +39,12 @@ function openModal2 () {
   if (titleValue === '' || categoryId === '' || !image) {
   buttonValidation.classList.add('button-validation-wait')
   }
-
-  // Appel de la fonction pour récupérer les categories dans le formulaire
-  processCategoriesModal()
+  if(!categoriesProcess){
+    // Appel de la fonction pour récupérer les categories dans le formulaire
+    processCategoriesModal()
+  }
+  
+  
 }
 
 
@@ -54,6 +57,7 @@ function closeModal () {
   sizeInfo.style.display = 'block'
   addButton.style.display = 'flex'
   document.getElementById('categorie').value = 0
+  buttonModif.style.visibility = 'visible'
 }
 // Fermeture des modales au clic à l'exterieur de celle-ci
 window.addEventListener('click', function (e) {
@@ -119,6 +123,7 @@ function createWorksModal(work) {
  
 }
 
+let categoriesProcess = false
 // Fonction pour récupérer les categories dans le formulaire
 async function processCategoriesModal () {
   const categoriesArray = await getCategories()
@@ -130,6 +135,7 @@ async function processCategoriesModal () {
       optionCategories.textContent = category.name
       optionCategories.id = category.id
   })
+  categoriesProcess = true
 }
 
 
@@ -189,7 +195,6 @@ function postWorks () {
 })
   .then(data => {
       console.log("reponse de l'API:", data) 
-      console.log(data.id)
       addImgGallery(data.imageUrl, title, data)
       closeModal()
       addImgGalleryModal (data.imageUrl, data)
@@ -205,7 +210,6 @@ function addImgGallery (imageUrl, title,data ){
   const imgElement = document.createElement('img')
   const figureElement = document.createElement('figure')
   figureElement.id = `gallery-figure-${data.id}`
-  console.log(figureElement.id)
   gallery.appendChild(figureElement)
   imgElement.src = imageUrl
   figureElement.appendChild(imgElement)
@@ -219,7 +223,6 @@ function addImgGalleryModal (imageUrl, data) {
   const imgElement = document.createElement('img')
   const figure = document.createElement("figure")
   figure.id = `figure-${data.id}`
-  console.log(figure.id)
   figure.appendChild(imgElement)
   modalGallery.appendChild(figure)
   imgElement.src = imageUrl

@@ -150,6 +150,7 @@ function getToken () {
         modal2.remove()
     } else {
         filterButton.style.visibility = "hidden";
+        filterButton.classList.add("hidden_button")
         logout.innerHTML = 'logout'
     }
     }
