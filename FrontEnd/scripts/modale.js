@@ -44,18 +44,6 @@ function openModal2() {
   }
 }
 
-// Fonction de fermeture des Modales 
-function closeModal() {
-  modal.style.visibility = 'hidden'
-  modal2.style.visibility = 'hidden'
-  image.style.display = 'none'
-  imgIcon.style.display = 'block'
-  sizeInfo.style.display = 'block'
-  addButton.style.display = 'flex'
-  document.getElementById('categorie').value = 0
-  buttonModif.style.visibility = 'visible'
-}
-
 // Fermeture des modales au clic à l'exterieur de celle-ci
 window.addEventListener('click', function (e) {
   if (e.target === modal || e.target === modal2) {
@@ -101,7 +89,8 @@ function createWorksModal(work) {
 function checkFormValidity() {
   const titleValue = titleInput.value.trim();
   const selectedIndex = categorySelect.selectedIndex;
-  const categoryId = categorySelect.options[selectedIndex].id;
+  const selectedOption = categorySelect.options[selectedIndex];
+  const categoryId = selectedOption ? selectedOption.id : '';
   const image = imageInput.files[0];
 
   if (titleValue !== '' && categoryId !== '' && image) {
@@ -134,11 +123,44 @@ async function processCategoriesModal() {
   categoriesProcess = true
 }
 
+// Affichage de l'aperçu de l'image à uploader dans la 2ème modale
+const inputPhoto = document.getElementById('add-input')
+const image = document.getElementById('image')
+const addButton = document.querySelector('.add-button')
+const imgIcon = document.querySelector('.add-img i')
+const sizeInfo = document.querySelector('.size-info')
+const addLabel = document.querySelector('.add-label')
+
+inputPhoto.onchange = function (event) {
+    const file = event.target.files[0]
+    const reader = new FileReader()
+
+    const maxSize = 4 * 1024 * 1024
+    const typeOfFile = ['image/jpeg', 'image/png']
+
+    if (file.size > maxSize) {
+        alert('Le fichier ne doit pas dépassé 4Mo. Veuillez en selectionner un autre')
+        inputPhoto.value = ''
+        return
+    }
+    if (!typeOfFile.includes(file.type)) {
+        alert("Le type de fichier sélectionné n'est pas le bon. Veuillez en selectionner un autre")
+        inputPhoto.value = ''
+        return
+    }
+    reader.onload = function (e) {
+        image.src = e.target.result
+        image.style.display = 'block'
+        imgIcon.style.display = 'none'
+        sizeInfo.style.display = 'none'
+        addButton.style.display = 'none'
+    }
+    reader.readAsDataURL(file)
+}
+
 buttonValidation.addEventListener('click', function () {
   postWorks()
 })
-
-
 
 function postWorks() {
   const image = document.getElementById('add-input').files[0]
@@ -154,11 +176,9 @@ function postWorks() {
   if (categoryId === '') {
     errorMessage += 'Catégorie obligatoire, veuillez indiquer une catégorie.\n'
   }
-
   if (!image) {
     errorMessage += 'Image obligatoire, veuillez uploader une image.\n'
   }
-
   if (errorMessage !== '') {
     alert(errorMessage)
     return
@@ -277,4 +297,18 @@ function resetForm() {
   document.getElementById('title').value = '';
   document.getElementById('categorie').selectedIndex = 0;
   document.getElementById('add-input').value = '';
+}
+
+// Fonction de fermeture des Modales 
+function closeModal() {
+  modal.style.visibility = 'hidden'
+  modal2.style.visibility = 'hidden'
+  image.style.display = 'none'
+  imgIcon.style.display = 'block'
+  sizeInfo.style.display = 'block'
+  addButton.style.display = 'flex'
+  document.getElementById('categorie').value = 0
+  buttonModif.style.visibility = 'visible'
+  imageInput.value = ''
+  titleInput.value = ''
 }

@@ -47,8 +47,5 @@ form.addEventListener("submit", (evt) => {
     .catch(error => {
       alert('Erreur lors de la connexion:', error);
     });
-
-
-
 })
 
